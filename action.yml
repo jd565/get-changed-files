@@ -23,6 +23,12 @@ inputs:
   filter:
     required: true
     default: '*'
+  head-sha:
+    description: >
+      SHA of the head commit to compare to the base branch.
+      For pull requests this defaults to the head commit of the PR branch.
+      For push events this defaults to the after commit of the push.
+    required: false
 outputs:
   all:
     description: >
