@@ -32,11 +32,11 @@ async function run(): Promise<void> {
       case 'pull_request_target':
       case 'pull_request':
         base = context.payload.pull_request?.base?.sha
-        head = headSha | context.payload.pull_request?.head?.sha
+        head = headSha || context.payload.pull_request?.head?.sha
         break
       case 'push':
         base = context.payload.before
-        head = headSha | context.payload.after
+        head = headSha || context.payload.after
         break
       default:
         core.setFailed(
