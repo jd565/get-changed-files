@@ -11,6 +11,7 @@ async function run(): Promise<void> {
     const client = new GitHub(core.getInput('token', {required: true}))
     const format = core.getInput('format', {required: true}) as Format
     const filter = core.getMultilineInput('filter', {required: true}) || '*'
+    const headSha = core.getInput('head-sha', {required: true})
 
     // Ensure that the format parameter is set properly.
     if (format !== 'space-delimited' && format !== 'csv' && format !== 'json') {
@@ -31,11 +32,11 @@ async function run(): Promise<void> {
       case 'pull_request_target':
       case 'pull_request':
         base = context.payload.pull_request?.base?.sha
-        head = context.payload.pull_request?.head?.sha
+        head = headSha | context.payload.pull_request?.head?.sha
         break
       case 'push':
         base = context.payload.before
-        head = context.payload.after
+        head = headSha | context.payload.after
         break
       default:
         core.setFailed(
